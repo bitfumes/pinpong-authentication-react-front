@@ -1,17 +1,28 @@
 import React, { Component } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
-export default class Login extends Component {
+
+export default class Register extends Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", errors: {} };
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      errors: {}
+    };
   }
   handleForm = e => {
     e.preventDefault();
-    const data = { email: this.state.email, password: this.state.password };
-
+    const data = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password_confirmation: this.state.password_confirmation
+    };
     axios
-      .post("http://localhost:8000/api/auth/login", data)
+      .post("http://localhost:8000/api/auth/register", data)
       .then(res => {
         cookie.set("token", res.data.access_token);
         cookie.set("user", res.data.user);
@@ -26,19 +37,23 @@ export default class Login extends Component {
     this.setState({ [name]: value });
   };
   render() {
-    const error = this.state.errors;
     return (
       <div className="flex">
         <div className="w-1/3" />
         <div className="w-1/3 mt-10 p-4 bg-white">
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
-              <h1 className="text-lg border-b border-gray-500">Ping Here</h1>
-              {error.errors ? (
-                <p className="text-red-500 text-sm">{error.errors}</p>
-              ) : (
-                ""
-              )}
+              <h1 className="text-lg border-b border-gray-500">Pong Here</h1>
+              <div className="mt-4">
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your great name"
+                  onChange={this.handleInput}
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
               <div className="mt-4">
                 <label>Email</label>
                 <input
@@ -60,8 +75,19 @@ export default class Login extends Component {
                 />
               </div>
               <div className="mt-4">
+                <label>Confirm Password</label>
+                <input
+                  type="password"
+                  name="password_confirmation"
+                  onChange={this.handleInput}
+                  placeholder="Confirm your password"
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
                 <input
                   type="submit"
+                  value="Register"
                   className="mt-1 p-2 border border-gray-400 rounded cursor-pointer bg-purple-600 text-white"
                 />
               </div>
