@@ -7,8 +7,26 @@ import store from "./store/index";
 import { Provider } from "react-redux";
 import axios from "axios";
 import cookie from "js-cookie";
+import jwt from "jsonwebtoken";
 
-const token = cookie.get("token");
+const jwt_secret =
+  "xsrHWRQStAHvOd4Eqe7tXvtKWCgFtkOhSXmmHtLNGVEvnOWAaWGMVtIVWnB8DBjC";
+
+let token = cookie.get("token");
+if (token) {
+  jwt.verify(token, jwt_secret, (err, decoded) => {
+    if (err) {
+      cookie.remove("token");
+      token = null;
+    } else {
+      if (decoded.iss !== "http://localhost:8000/api/auth/login") {
+        cookie.remove("token");
+        token = null;
+      }
+    }
+  });
+}
+
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
