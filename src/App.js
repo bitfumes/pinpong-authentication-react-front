@@ -1,6 +1,6 @@
 import React from "react";
 import "./css/tailwind.css";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import Login from "./Login";
 import Profile from "./Profile";
 import Register from "./Register";

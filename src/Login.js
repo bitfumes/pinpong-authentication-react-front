@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
-export default class Login extends Component {
+import { connect } from "react-redux";
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = { email: "", password: "", errors: {} };
@@ -14,7 +15,7 @@ export default class Login extends Component {
       .post("http://localhost:8000/api/auth/login", data)
       .then(res => {
         cookie.set("token", res.data.access_token);
-        cookie.set("user", res.data.user);
+        this.props.setLogin(res.data.user);
         this.props.history.push("/profile");
       })
       .catch(e => this.setState({ errors: e.response.data }));
@@ -72,3 +73,13 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setLogin: user => dispatch({ type: "SET_LOGIN", payload: user })
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);
