@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
 import { connect } from "react-redux";
+import Error from "./components/Error";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +19,7 @@ class Login extends Component {
         this.props.setLogin(res.data.user);
         this.props.history.push("/profile");
       })
-      .catch(e => this.setState({ errors: e.response.data }));
+      .catch(e => this.setState({ errors: e.response.data.errors }));
   };
   handleInput = e => {
     e.preventDefault();
@@ -27,7 +28,6 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
   render() {
-    const error = this.state.errors;
     return (
       <div className="flex">
         <div className="w-1/3" />
@@ -35,11 +35,13 @@ class Login extends Component {
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
               <h1 className="text-lg border-b border-gray-500">Ping Here</h1>
-              {error.errors ? (
-                <p className="text-red-500 text-sm">{error.errors}</p>
-              ) : (
-                ""
-              )}
+              <Error
+                error={
+                  this.state.errors["result"]
+                    ? this.state.errors["result"]
+                    : null
+                }
+              />
               <div className="mt-4">
                 <label>Email</label>
                 <input
@@ -48,6 +50,13 @@ class Login extends Component {
                   placeholder="Lovely Email"
                   onChange={this.handleInput}
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+                <Error
+                  error={
+                    this.state.errors["email"]
+                      ? this.state.errors["email"]
+                      : null
+                  }
                 />
               </div>
               <div className="mt-4">
@@ -58,6 +67,13 @@ class Login extends Component {
                   onChange={this.handleInput}
                   placeholder="Super Duper Secret Password"
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+                <Error
+                  error={
+                    this.state.errors["password"]
+                      ? this.state.errors["password"]
+                      : null
+                  }
                 />
               </div>
               <div className="mt-4">

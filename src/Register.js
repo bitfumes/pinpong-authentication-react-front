@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
-
+import Error from "./components/Error";
 export default class Register extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +28,7 @@ export default class Register extends Component {
         cookie.set("user", res.data.user);
         this.props.history.push("/profile");
       })
-      .catch(e => this.setState({ errors: e.response.data }));
+      .catch(e => this.setState({ errors: e.response.data.errors }));
   };
   handleInput = e => {
     e.preventDefault();
@@ -53,6 +53,11 @@ export default class Register extends Component {
                   onChange={this.handleInput}
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
                 />
+                <Error
+                  error={
+                    this.state.errors["name"] ? this.state.errors["name"] : null
+                  }
+                />
               </div>
               <div className="mt-4">
                 <label>Email</label>
@@ -63,6 +68,13 @@ export default class Register extends Component {
                   onChange={this.handleInput}
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
                 />
+                <Error
+                  error={
+                    this.state.errors["email"]
+                      ? this.state.errors["email"]
+                      : null
+                  }
+                />
               </div>
               <div className="mt-4">
                 <label>Password</label>
@@ -72,6 +84,13 @@ export default class Register extends Component {
                   onChange={this.handleInput}
                   placeholder="Super Duper Secret Password"
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+                <Error
+                  error={
+                    this.state.errors["password"]
+                      ? this.state.errors["password"]
+                      : null
+                  }
                 />
               </div>
               <div className="mt-4">

@@ -1,6 +1,5 @@
 import { Route, Redirect } from "react-router-dom";
 import React from "react";
-import cookie from "js-cookie";
 import { connect } from "react-redux";
 const AuthRoute = ({ component: Component, ...rest }) => {
   return (
